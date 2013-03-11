@@ -17,6 +17,9 @@
 # limitations under the License.
 #
 
+node.normal['build_essential']['compiletime'] = true
+include_recipe 'build-essential'
+
 xml = package "libxml2-dev" do
   case node['platform']
   when "centos", "redhat", "amazon", "scientific"
@@ -36,3 +39,4 @@ end
 xslt.run_action( :install )
 
 chef_gem "fog"
+chef_gem "nokogiri"
