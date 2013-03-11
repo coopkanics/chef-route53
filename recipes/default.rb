@@ -35,7 +35,4 @@ xslt = package "libxslt1-dev" do
 end
 xslt.run_action( :install )
 
-fog = chef_gem "fog" do
-  action :nothing
-end
-fog.run_action( :install )
+chef_gem "fog"
