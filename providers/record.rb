@@ -18,6 +18,10 @@ action :create do
     @ttl ||= new_resource.ttl
   end
 
+  def force
+    @force ||= new_resource.force
+  end
+
   def zone
     @zone ||= Fog::DNS.new({ :provider => "aws",
                              :aws_access_key_id => new_resource.aws_access_key_id,
@@ -43,9 +47,13 @@ action :create do
     Chef::Log.info "Record created: #{name}"
     new_resource.updated_by_last_action(true)
   elsif value != record.value.first
-    record.destroy
-    create
-    Chef::Log.info "Record modified: #{name}"
-    new_resource.updated_by_last_action(true)
+    if force
+      record.destroy
+      create
+      Chef::Log.info "Record modified: #{name}"
+      new_resource.updated_by_last_action(true)
+    else
+      Chef::Log.info "#{name} currently resolves to #{record.value.first}, won't overwrite without force"
+    end
   end
 end
