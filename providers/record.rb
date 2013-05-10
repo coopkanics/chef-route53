@@ -53,7 +53,7 @@ action :create do
       Chef::Log.info "Record modified: #{name}"
       new_resource.updated_by_last_action(true)
     else
-      Chef::Log.info "#{name} currently resolves to #{record.value.first}, won't overwrite without force"
+      Chef::Application.fatal!("#{name} currently resolves to #{record.value.first}, won't overwrite without force")
     end
   end
 end
